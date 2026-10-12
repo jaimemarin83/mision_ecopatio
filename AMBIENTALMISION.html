@@ -1,0 +1,883 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión EcoPatio - Guardianes Galácticos</title>
+<style>
+:root {
+  --bg:#03091c;
+  --panel:#081b35;
+  --panel2:#0c2944;
+  --cyan:#29f5ee;
+  --green:#8aff57;
+  --purple:#a77bff;
+  --white:#f2fbff;
+  --muted:#a6c7dc;
+  --red:#ff647c;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,#16386c 0,transparent 30%),
+    radial-gradient(circle at 90% 45%,#192b65 0,transparent 30%),
+    linear-gradient(145deg,#020617,#07162d 60%,#10143c);
+  min-height:100vh;
+}
+button { font:inherit; }
+button:focus-visible { outline:3px solid white; outline-offset:3px; }
+header {
+  padding:27px 16px;
+  text-align:center;
+  border-bottom:2px solid var(--cyan);
+  background:linear-gradient(90deg,#071b35,#123451,#111438);
+  box-shadow:0 0 25px #29f5ee30;
+}
+.brand { font-size:clamp(2rem,6vw,3.7rem); font-weight:1000; letter-spacing:2px; color:var(--green); text-shadow:0 0 20px #8aff5770; }
+.subtitle { color:var(--cyan); font-weight:bold; margin:10px 0; }
+header p { color:var(--muted); margin-bottom:0; }
+.container { width:min(1200px,96%); margin:22px auto; }
+.layout { display:grid; grid-template-columns:245px minmax(0,1fr); gap:18px; align-items:start; }
+.panel {
+  background:linear-gradient(145deg,#0b2340ed,#06152df5);
+  border:1px solid #29f5ee80;
+  border-radius:19px;
+  padding:20px;
+  box-shadow:0 0 20px #29f5ee12,inset 0 0 20px #123e561c;
+}
+.panel h2,.panel h3 { color:var(--cyan); margin-top:0; }
+.alien {
+  text-align:center;
+  font-size:5rem;
+  filter:drop-shadow(0 0 18px #8aff57);
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform:translateY(0) rotate(-3deg); }
+  50% { transform:translateY(-10px) rotate(3deg); }
+}
+.speech {
+  border:1px solid var(--green);
+  border-radius:15px;
+  padding:13px;
+  background:#102b35;
+  line-height:1.6;
+  color:#e8ffd9;
+}
+.level-list { display:grid; gap:9px; margin-top:16px; }
+.level-item {
+  padding:12px;
+  border:1px solid #395878;
+  background:#091a32;
+  border-radius:12px;
+  color:#9eb5ca;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.level-item.active { border:1px solid var(--green); background:#17372c; color:white; box-shadow:0 0 12px #8aff5720; }
+.level-item.done { border-color:var(--cyan); color:var(--green); }
+.level-icon { font-size:1.5rem; }
+.level-item strong { display:block; margin-bottom:3px; }
+.level-item small { display:block; line-height:1.4; }
+.main-panel { min-height:570px; }
+.hidden { display:none !important; }
+.topline { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.badge {
+  border:1px solid var(--green);
+  border-radius:25px;
+  padding:8px 13px;
+  color:var(--green);
+  font-weight:bold;
+  font-size:.9rem;
+}
+.progress-track { background:#162c45; border-radius:30px; height:13px; overflow:hidden; margin:12px 0; }
+.progress-fill { width:0; height:100%; background:linear-gradient(90deg,var(--cyan),var(--green)); transition:width .35s; }
+.progress-label { display:flex; justify-content:space-between; color:var(--muted); font-size:.88rem; gap:10px; }
+h2 { line-height:1.3; }
+.story {
+  background:#102742;
+  border-left:4px solid var(--purple);
+  border-radius:10px;
+  padding:16px;
+  line-height:1.7;
+  color:#d9e9ff;
+  margin:18px 0;
+}
+.objectives { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin:18px 0; }
+.objective { background:#102b42; border:1px solid #315475; padding:13px; border-radius:12px; line-height:1.5; }
+.objective strong { color:var(--green); display:block; margin-bottom:5px; }
+.btn {
+  border:0;
+  border-radius:12px;
+  padding:13px 20px;
+  cursor:pointer;
+  font-weight:800;
+  transition:transform .15s,filter .15s;
+}
+.btn:hover:not(:disabled) { transform:translateY(-2px); filter:brightness(1.12); }
+.btn:disabled { opacity:.5; cursor:not-allowed; }
+.btn-main { color:#041321; background:linear-gradient(100deg,var(--green),var(--cyan)); box-shadow:0 0 16px #29f5ee25; }
+.btn-secondary { color:white; background:#172e4a; border:1px solid #466487; }
+.btn-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.center { text-align:center; }
+.code-title { color:var(--cyan); font-weight:bold; margin-top:20px; }
+.secret-code { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; margin-top:12px; }
+.code-slot {
+  min-width:0;
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  border:1px dashed #41617b;
+  border-radius:12px;
+  background:#08172a;
+  font-size:clamp(1.1rem,4vw,1.9rem);
+  font-weight:900;
+  color:#7894ad;
+}
+.code-slot.revealed { border:1px solid var(--green); background:#163a2b; color:var(--green); box-shadow:0 0 12px #8aff5730; }
+.question-number { color:var(--green); font-weight:bold; letter-spacing:1px; }
+.question-text { font-size:clamp(1.1rem,3vw,1.4rem); line-height:1.6; margin:22px 0; font-weight:bold; }
+.options { display:grid; gap:12px; }
+.option {
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+  width:100%;
+  padding:15px;
+  border-radius:13px;
+  border:1px solid #355b79;
+  background:#0b2039;
+  color:var(--white);
+  text-align:left;
+  cursor:pointer;
+  line-height:1.55;
+  transition:background .15s,border .15s;
+}
+.option:hover:not(:disabled) { border-color:var(--cyan); background:#12314c; }
+.option:disabled { cursor:default; }
+.option .letter {
+  flex:0 0 30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#1a3c57;
+  color:var(--cyan);
+  font-weight:bold;
+}
+.option.selected-correct { border-color:var(--green); background:#123b31; }
+.option.selected-correct .letter { background:var(--green); color:#071b15; }
+.option.selected-wrong { border-color:var(--red); background:#361c30; }
+.option.selected-wrong .letter { background:var(--red); color:#19050a; }
+.feedback { margin-top:17px; padding:15px; border-radius:12px; line-height:1.6; }
+.feedback.success { border:1px solid var(--green); background:#103428; color:#e2ffdc; }
+.feedback.error { border:1px solid var(--red); background:#301a2a; color:#ffe2e8; }
+.feedback.neutral { border:1px solid var(--cyan); background:#102d41; color:#e3ffff; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:20px 0; }
+.stat { padding:13px 6px; text-align:center; background:#102741; border-radius:12px; border:1px solid #294965; }
+.stat strong { display:block; color:var(--green); font-size:1.4rem; margin-bottom:5px; }
+.stat small { color:var(--muted); }
+.mini-progress { display:flex; gap:8px; margin:16px 0; }
+.mini-dot { height:10px; flex:1; border-radius:20px; background:#233a50; border:1px solid #45617b; }
+.mini-dot.done { background:var(--green); border-color:var(--green); box-shadow:0 0 9px #8aff5750; }
+.mini-dot.current { border-color:var(--cyan); background:#155363; }
+.question-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:20px; }
+.small-muted { color:var(--muted); font-size:.9rem; line-height:1.6; }
+.victory-icon { font-size:5rem; animation:float 3s ease-in-out infinite; }
+.final-word { font-size:clamp(2.7rem,9vw,5rem); font-weight:1000; letter-spacing:9px; color:var(--green); text-shadow:0 0 25px #8aff5770; overflow-wrap:anywhere; }
+footer { text-align:center; padding:24px 12px; color:#a6c7dc; border-top:1px solid #254560; line-height:1.7; }
+footer strong { color:var(--green); }
+@media(max-width:800px) {
+  .layout { grid-template-columns:1fr; }
+  .sidebar { order:2; }
+  .main-panel { order:1; min-height:0; }
+  .alien { font-size:3.5rem; }
+  .sidebar-top { display:grid; grid-template-columns:100px minmax(0,1fr); gap:12px; align-items:center; }
+  .sidebar-top .alien { margin:0; }
+}
+@media(max-width:420px) {
+  .panel { padding:15px; }
+  .question-footer .btn { width:100%; }
+  .final-word { letter-spacing:4px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🛸 MISIÓN ECOPATIO 🌎</div>
+  <div class="subtitle">PEQUEÑAS ACCIONES, GRANDES CAMBIOS AMBIENTALES</div>
+  <p>Institución Educativa Patio Bonito · Grados 10.º y 11.º</p>
+  <p>🚀 Operación intergaláctica para salvar nuestro planeta</p>
+</header>
+
+<main class="container">
+
+  <section id="welcome" class="panel">
+    <div class="center">
+      <div class="alien">👽</div>
+      <h2>¡Saludos, Guardianes Ambientales!</h2>
+      <p class="subtitle">Soy Z-ECO, explorador del planeta Verdegalaxia.</p>
+    </div>
+
+    <div class="story">
+      <strong>📡 MENSAJE INTERGALÁCTICO DE EMERGENCIA</strong><br>
+      ¡Atención, equipo! El temible <strong>Contaminador</strong> ha invadido la Institución Educativa Patio Bonito. Ha desordenado los puntos ecológicos, aumentado la contaminación y escondido un código secreto de cinco letras.
+      <br><br>
+      Necesito su ayuda para recuperar el equilibrio ambiental. Deberán superar cinco niveles, resolver tres preguntas en cada uno y demostrar que tienen los conocimientos necesarios para proteger nuestro planeta.
+      <br><br>
+      ¡Cuidado! Solo podrán avanzar si responden correctamente todas las preguntas del nivel.
+    </div>
+
+    <div class="objectives">
+      <div class="objective"><strong>🗑️ Nivel 1</strong>Clasificación de residuos sólidos.</div>
+      <div class="objective"><strong>♻️ Nivel 2</strong>Uso de los puntos ecológicos.</div>
+      <div class="objective"><strong>🔄 Nivel 3</strong>Reducir, reutilizar y reciclar.</div>
+      <div class="objective"><strong>☢️ Nivel 4</strong>Impacto de la contaminación.</div>
+      <div class="objective"><strong>🌱 Nivel 5</strong>Buenas prácticas ambientales.</div>
+    </div>
+
+    <div class="story">
+      <strong>🎮 REGLAS DEL JUEGO</strong>
+      <ul>
+        <li>Completa las tres preguntas de cada nivel.</li>
+        <li>Si te equivocas, podrás intentarlo de nuevo, pero no recibirás pistas ni conocerás la respuesta correcta.</li>
+        <li>Al completar un nivel, obtendrás una letra secreta.</li>
+        <li>Descubre la palabra final y desbloquea el Centro de Gestión Ambiental.</li>
+      </ul>
+    </div>
+
+    <div class="center">
+      <button class="btn btn-main" onclick="startGame()">🚀 INICIAR MISIÓN</button>
+    </div>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="layout">
+
+      <aside class="panel sidebar">
+        <div class="sidebar-top">
+          <div class="alien">👽</div>
+          <div class="speech" id="alienMessage">
+            ¡Vamos, Guardián! Cada respuesta correcta nos acerca a salvar el colegio.
+          </div>
+        </div>
+
+        <h3 style="margin-top:22px">🪐 MAPA GALÁCTICO</h3>
+        <div id="levelList" class="level-list"></div>
+
+        <div class="code-title">🔐 CÓDIGO SECRETO</div>
+        <div class="secret-code" id="secretCode"></div>
+        <p class="small-muted">Recupera las cinco letras para activar el sistema ambiental.</p>
+      </aside>
+
+      <section class="panel main-panel">
+        <div class="topline">
+          <span class="badge" id="levelBadge">NIVEL 1 DE 5</span>
+          <span class="badge" id="questionBadge">PREGUNTA 1 DE 3</span>
+        </div>
+
+        <div class="progress-label" style="margin-top:20px">
+          <span>Progreso de la misión</span>
+          <span id="progressText">0 %</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><strong id="statLevels">0/5</strong><small>Niveles superados</small></div>
+          <div class="stat"><strong id="statQuestions">0/15</strong><small>Preguntas correctas</small></div>
+          <div class="stat"><strong id="statLetters">0/5</strong><small>Letras recuperadas</small></div>
+        </div>
+
+        <div class="story" id="levelStory"></div>
+
+        <div class="question-number" id="questionNumber">DESAFÍO 01</div>
+        <div class="question-text" id="questionText"></div>
+        <div id="options" class="options"></div>
+
+        <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
+
+        <div class="question-footer">
+          <span class="small-muted" id="attemptLabel">Selecciona una respuesta para continuar.</span>
+          <button id="continueButton" class="btn btn-main hidden" onclick="continueGame()">CONTINUAR ➜</button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section id="victory" class="panel hidden center">
+    <div class="victory-icon">🏆👽🌎</div>
+    <h2>¡MISIÓN CUMPLIDA!</h2>
+    <p>¡Lo lograron, Guardianes! Han superado todos los niveles y derrotado los planes del Contaminador.</p>
+
+    <div class="story">
+      El sistema ecológico de la Institución Educativa Patio Bonito ha sido restaurado. Los puntos ecológicos vuelven a funcionar correctamente y el equipo ha demostrado su compromiso con el planeta.
+    </div>
+
+    <p class="subtitle">🔓 PALABRA SECRETA DESBLOQUEADA</p>
+    <div class="final-word" id="finalWord">VERDE</div>
+    <h3 style="color:var(--green)">🌱 CENTRO DE GESTIÓN AMBIENTAL ACTIVADO</h3>
+
+    <div class="objectives">
+      <div class="objective"><strong>♻️ Reduce</strong>Evita generar residuos innecesarios.</div>
+      <div class="objective"><strong>🔄 Reutiliza</strong>Dale una nueva oportunidad a los materiales.</div>
+      <div class="objective"><strong>🌎 Recicla</strong>Separa correctamente los residuos aprovechables.</div>
+    </div>
+
+    <div class="story">
+      <strong>📢 MENSAJE FINAL</strong><br>
+      “PATIO BONITO LIMPIO, RESPONSABILIDAD DE TODOS”.<br><br>
+      Recuerda que cada acción cuenta. Cuidar el agua, reducir los residuos y mantener limpios nuestros espacios es una responsabilidad compartida. ¡La Tierra es nuestro hogar!
+    </div>
+
+    <div id="finalStats" class="badge"></div>
+    <div style="margin-top:22px">
+      <button class="btn btn-main" onclick="restartGame()">🔄 JUGAR NUEVAMENTE</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <strong>🛸 MISIÓN ECOPATIO · GUARDIANES AMBIENTALES</strong><br>
+  Institución Educativa Patio Bonito · Líbano, Tolima<br>
+  <em>“Un planeta limpio comienza con una pequeña acción”.</em>
+</footer>
+
+<script>
+"use strict";
+
+const levels = [
+  {
+    title: "Clasificación de residuos",
+    icon: "🗑️",
+    letter: "V",
+    story: "🪐 PLANETA 1: RESIDUOS GALÁCTICOS. El Contaminador ha mezclado los residuos del colegio. Resuelve los tres desafíos para recuperar el control de la clasificación.",
+    questions: [
+      {
+        q: "Encuentras una botella plástica vacía, limpia y seca. Según el código de colores utilizado en Colombia, ¿dónde debes depositarla?",
+        options: [
+          "En el recipiente blanco, para residuos aprovechables.",
+          "En el recipiente verde, para residuos orgánicos aprovechables.",
+          "En el recipiente negro, para residuos no aprovechables."
+        ],
+        correct: 0,
+        explanation: "Los residuos aprovechables limpios y secos, como plástico, papel, cartón, vidrio y metales, se depositan en el recipiente blanco."
+      },
+      {
+        q: "Después del almuerzo encuentras una servilleta de papel usada y sucia. ¿Cuál es la disposición adecuada según el código de colores?",
+        options: [
+          "Recipiente blanco, porque todas las servilletas son reciclables.",
+          "Recipiente verde, porque todos los residuos usados son orgánicos.",
+          "Recipiente negro, porque es un residuo no aprovechable en esas condiciones."
+        ],
+        correct: 2,
+        explanation: "Las servilletas usadas y contaminadas con alimentos generalmente van al recipiente negro, pues no son aprovechables como el papel limpio y seco."
+      },
+      {
+        q: "En la huerta escolar se producen hojas secas y restos de frutas aptos para aprovechamiento orgánico. ¿En qué recipiente deben depositarse?",
+        options: [
+          "En el recipiente blanco.",
+          "En el recipiente verde.",
+          "En el recipiente negro."
+        ],
+        correct: 1,
+        explanation: "El recipiente verde se utiliza para residuos orgánicos aprovechables, como restos de frutas, verduras y material vegetal adecuado."
+      }
+    ]
+  },
+  {
+    title: "Puntos ecológicos",
+    icon: "🎯",
+    letter: "E",
+    story: "🪐 PLANETA 2: ESTACIÓN DE RECICLAJE. Los robots de limpieza perdieron sus instrucciones. Demuestra que sabes utilizar correctamente los puntos ecológicos.",
+    questions: [
+      {
+        q: "Un estudiante lleva una caja de cartón limpia y seca al punto ecológico. ¿Cuál es la mejor decisión?",
+        options: [
+          "Depositarla en el recipiente blanco para residuos aprovechables.",
+          "Depositarla en el recipiente negro sin revisar su estado.",
+          "Dejarla en el suelo junto a los recipientes."
+        ],
+        correct: 0,
+        explanation: "El cartón limpio y seco es aprovechable y debe depositarse en el recipiente blanco."
+      },
+      {
+        q: "¿Qué debes hacer antes de depositar un envase aprovechable en el punto ecológico?",
+        options: [
+          "Mezclarlo con restos de comida para ahorrar espacio.",
+          "Verificar que esté vacío, limpio y seco, siguiendo las indicaciones del colegio.",
+          "Arrojarlo al primer recipiente disponible."
+        ],
+        correct: 1,
+        explanation: "Los materiales aprovechables deben entregarse limpios y secos para facilitar su recuperación y reciclaje."
+      },
+      {
+        q: "Los tres recipientes del colegio tienen sus colores, pero no cuentan con rótulos visibles. ¿Qué acción ayudaría a mejorar su uso?",
+        options: [
+          "Retirar los recipientes para que nadie los utilice.",
+          "Permitir que cada persona deposite sus residuos donde quiera.",
+          "Instalar rótulos claros con ejemplos de residuos y realizar una campaña educativa."
+        ],
+        correct: 2,
+        explanation: "La señalización y la educación ambiental facilitan la separación correcta y disminuyen los errores en la disposición de residuos."
+      }
+    ]
+  },
+  {
+    title: "Reducir, reutilizar y reciclar",
+    icon: "♻️",
+    letter: "R",
+    story: "🪐 PLANETA 3: EL LABORATORIO DE LAS TRES R. El Contaminador está utilizando demasiados materiales desechables. Activa las estrategias para reducir la generación de residuos.",
+    questions: [
+      {
+        q: "La cafetería escolar utiliza muchos vasos desechables. ¿Qué medida aplica mejor la reducción?",
+        options: [
+          "Promover el uso de recipientes reutilizables y evitar los vasos innecesarios.",
+          "Recoger los vasos después de que hayan sido arrojados al suelo.",
+          "Comprar más vasos desechables para tener suficientes."
+        ],
+        correct: 0,
+        explanation: "Reducir significa evitar la generación de residuos desde el comienzo, por ejemplo, disminuyendo el consumo de productos desechables."
+      },
+      {
+        q: "Un grupo de estudiantes transforma botellas plásticas limpias en materas para la huerta. ¿Qué práctica está realizando principalmente?",
+        options: [
+          "Disposición final.",
+          "Reutilización.",
+          "Contaminación del suelo."
+        ],
+        correct: 1,
+        explanation: "La reutilización consiste en volver a utilizar un objeto para el mismo propósito u otro diferente, prolongando su vida útil."
+      },
+      {
+        q: "La institución entrega papel limpio y cartón separados a una organización recuperadora para transformarlos en nuevos materiales. ¿Qué proceso representa?",
+        options: [
+          "Quema de residuos.",
+          "Eliminación indiscriminada.",
+          "Reciclaje."
+        ],
+        correct: 2,
+        explanation: "El reciclaje permite transformar materiales recuperados en materias primas o nuevos productos."
+      }
+    ]
+  },
+  {
+    title: "Impacto de la contaminación",
+    icon: "☢️",
+    letter: "D",
+    story: "🪐 PLANETA 4: ZONA DE EMERGENCIA. Los residuos del colegio están llegando a las zonas verdes y a las fuentes de agua. Analiza las consecuencias y ayuda a proteger los ecosistemas.",
+    questions: [
+      {
+        q: "Cuando los residuos abandonados en el patio son arrastrados por la lluvia hacia una quebrada, ¿qué puede ocurrir?",
+        options: [
+          "El agua siempre se purifica de inmediato.",
+          "Se puede contaminar el agua y afectar a los organismos acuáticos.",
+          "Los residuos desaparecen sin causar ningún efecto."
+        ],
+        correct: 1,
+        explanation: "Los residuos pueden contaminar las fuentes hídricas, afectar a los organismos acuáticos y deteriorar los ecosistemas."
+      },
+      {
+        q: "¿Cuál es un posible efecto de acumular residuos y recipientes con agua estancada cerca de las aulas?",
+        options: [
+          "Aumento automático de la biodiversidad beneficiosa.",
+          "Mejoramiento de la calidad del aire.",
+          "Aparición de malos olores y posibles criaderos de mosquitos."
+        ],
+        correct: 2,
+        explanation: "La acumulación de residuos y agua estancada puede generar malos olores y favorecer la proliferación de mosquitos y otros vectores."
+      },
+      {
+        q: "¿Por qué es importante evitar la quema de residuos sólidos en los espacios escolares?",
+        options: [
+          "Porque puede liberar contaminantes atmosféricos perjudiciales para la salud y el ambiente.",
+          "Porque hace que todos los materiales sean reciclables.",
+          "Porque convierte cualquier residuo en abono seguro."
+        ],
+        correct: 0,
+        explanation: "La quema de residuos puede liberar partículas y sustancias nocivas, afectar la calidad del aire y perjudicar la salud."
+      }
+    ]
+  },
+  {
+    title: "Buenas prácticas ambientales",
+    icon: "🌱",
+    letter: "E",
+    story: "🪐 PLANETA 5: EL CENTRO DE GESTIÓN AMBIENTAL. ¡Último desafío! El Contaminador se prepara para escapar. Responde las tres preguntas finales para activar el sistema ecológico y recuperar la palabra secreta.",
+    questions: [
+      {
+        q: "El grado 11 desea crear una estrategia para disminuir los residuos del colegio durante todo el año. ¿Cuál es la mejor propuesta?",
+        options: [
+          "Organizar una sola jornada de limpieza y continuar con los mismos hábitos.",
+          "Diagnosticar los residuos, establecer metas, educar a la comunidad y evaluar los resultados periódicamente.",
+          "Ocultar las bolsas de residuos en una zona verde."
+        ],
+        correct: 1,
+        explanation: "Una estrategia integral combina diagnóstico, metas, educación, acciones concretas y seguimiento para mantener mejoras en el tiempo."
+      },
+      {
+        q: "Un compañero deposita una botella aprovechable en el recipiente equivocado. ¿Cuál es la respuesta más constructiva?",
+        options: [
+          "Burlarse de él delante de todos.",
+          "Ignorar siempre el problema.",
+          "Explicarle respetuosamente la clasificación y promover hábitos correctos."
+        ],
+        correct: 2,
+        explanation: "La comunicación respetuosa, la cooperación y la educación ayudan a construir una cultura ambiental responsable."
+      },
+      {
+        q: "¿Cuál de estas acciones representa mejor el compromiso ambiental de la comunidad educativa?",
+        options: [
+          "Reducir el consumo innecesario, separar residuos, cuidar el agua y mantener los espacios limpios de forma permanente.",
+          "Dejar todo el cuidado ambiental exclusivamente al personal de aseo.",
+          "Depositar los residuos en cualquier lugar si nadie está observando."
+        ],
+        correct: 0,
+        explanation: "El cuidado ambiental es una responsabilidad compartida que requiere hábitos sostenibles y participación constante de toda la comunidad."
+      }
+    ]
+  }
+];
+
+let currentLevel = 0;
+let currentQuestion = 0;
+let completedLevels = [];
+let answeredQuestions = [];
+let attempts = 0;
+let totalAttempts = 0;
+let questionLocked = false;
+let lastAnswerWasCorrect = false;
+
+function startGame() {
+  currentLevel = 0;
+  currentQuestion = 0;
+  completedLevels = [];
+  answeredQuestions = [];
+  attempts = 0;
+  totalAttempts = 0;
+  questionLocked = false;
+  lastAnswerWasCorrect = false;
+
+  for (let i = 0; i < levels.length; i++) {
+    answeredQuestions.push([false, false, false]);
+  }
+
+  document.getElementById("welcome").classList.add("hidden");
+  document.getElementById("victory").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+
+  renderSidebar();
+  renderQuestion();
+  updateStats();
+
+  document.getElementById("game").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderSidebar() {
+  const list = document.getElementById("levelList");
+  list.innerHTML = "";
+
+  levels.forEach((level, index) => {
+    const item = document.createElement("div");
+    const isDone = completedLevels.includes(index);
+    const isActive = currentLevel === index;
+
+    item.className = "level-item" +
+      (isDone ? " done" : "") +
+      (isActive ? " active" : "");
+
+    const icon = document.createElement("span");
+    icon.className = "level-icon";
+    icon.textContent = isDone ? "✅" : isActive ? level.icon : "🔒";
+
+    const details = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = "Nivel " + (index + 1);
+
+    const subtitle = document.createElement("small");
+    subtitle.textContent = isDone ? "Completado" :
+      isActive ? level.title : "Bloqueado";
+
+    details.append(title, subtitle);
+    item.append(icon, details);
+    list.appendChild(item);
+  });
+
+  const code = document.getElementById("secretCode");
+  code.innerHTML = "";
+
+  levels.forEach((level, index) => {
+    const slot = document.createElement("div");
+    const unlocked = completedLevels.includes(index);
+    slot.className = "code-slot" + (unlocked ? " revealed" : "");
+    slot.textContent = unlocked ? level.letter : "🔒";
+    slot.setAttribute("aria-label", unlocked ? "Letra recuperada" : "Letra bloqueada");
+    code.appendChild(slot);
+  });
+}
+
+function renderQuestion() {
+  const level = levels[currentLevel];
+  const question = level.questions[currentQuestion];
+
+  questionLocked = false;
+  lastAnswerWasCorrect = false;
+  attempts = 0;
+
+  document.getElementById("levelBadge").textContent =
+    "🪐 NIVEL " + (currentLevel + 1) + " DE " + levels.length;
+
+  document.getElementById("questionBadge").textContent =
+    "PREGUNTA " + (currentQuestion + 1) + " DE 3";
+
+  document.getElementById("levelStory").textContent = level.story;
+  document.getElementById("questionNumber").textContent =
+    "DESAFÍO " + String(currentLevel * 3 + currentQuestion + 1).padStart(2,"0");
+
+  document.getElementById("questionText").textContent = question.q;
+  document.getElementById("feedback").className = "feedback hidden";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("attemptLabel").textContent =
+    "Selecciona una respuesta para continuar.";
+
+  const continueButton = document.getElementById("continueButton");
+  continueButton.classList.add("hidden");
+  continueButton.textContent =
+    currentQuestion < 2 ? "SIGUIENTE PREGUNTA ➜" : "COMPLETAR NIVEL 🚀";
+
+  const options = document.getElementById("options");
+  options.innerHTML = "";
+
+  question.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "option";
+
+    const letter = document.createElement("span");
+    letter.className = "letter";
+    letter.textContent = String.fromCharCode(65 + index);
+
+    const text = document.createElement("span");
+    text.textContent = option;
+
+    button.append(letter, text);
+    button.addEventListener("click", () => checkAnswer(index));
+    options.appendChild(button);
+  });
+
+  const dots = document.createElement("div");
+  dots.className = "mini-progress";
+
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement("div");
+    dot.className = "mini-dot" +
+      (answeredQuestions[currentLevel][i] ? " done" : "") +
+      (i === currentQuestion ? " current" : "");
+    dots.appendChild(dot);
+  }
+
+  const existing = document.getElementById("questionDots");
+  if (existing) existing.remove();
+  dots.id = "questionDots";
+  document.getElementById("questionNumber").after(dots);
+
+  document.getElementById("alienMessage").textContent =
+    currentQuestion === 0
+      ? "¡Comienza el desafío! Analiza cada pregunta y elige con atención."
+      : "¡Continúa, Guardián! Necesitamos completar las tres preguntas del nivel.";
+
+  updateStats();
+}
+
+function checkAnswer(selectedIndex) {
+  if (questionLocked) return;
+
+  const question = levels[currentLevel].questions[currentQuestion];
+  const buttons = document.querySelectorAll("#options .option");
+  const feedback = document.getElementById("feedback");
+
+  attempts++;
+  totalAttempts++;
+
+  if (selectedIndex === question.correct) {
+    questionLocked = true;
+    lastAnswerWasCorrect = true;
+    answeredQuestions[currentLevel][currentQuestion] = true;
+
+    buttons.forEach((button, index) => {
+      button.disabled = true;
+      if (index === selectedIndex) button.classList.add("selected-correct");
+    });
+
+    feedback.className = "feedback success";
+    feedback.replaceChildren();
+
+    const title = document.createElement("strong");
+    title.textContent = "✅ ¡RESPUESTA CORRECTA!";
+
+    const explanation = document.createElement("div");
+    explanation.textContent = question.explanation;
+
+    feedback.append(title, explanation);
+
+    document.getElementById("attemptLabel").textContent =
+      "¡Bien hecho! Respuesta correcta en " + attempts +
+      (attempts === 1 ? " intento." : " intentos.");
+
+    document.getElementById("alienMessage").textContent =
+      "¡Excelente! Tu conocimiento ambiental nos ayuda a salvar el planeta.";
+
+    document.getElementById("continueButton").classList.remove("hidden");
+    updateStats();
+  } else {
+    buttons[selectedIndex].disabled = true;
+    buttons[selectedIndex].classList.add("selected-wrong");
+
+    feedback.className = "feedback error";
+    feedback.textContent = "❌ Respuesta incorrecta. ¡Inténtalo nuevamente! Analiza la pregunta y selecciona otra opción.";
+
+    document.getElementById("attemptLabel").textContent =
+      "Intenta de nuevo. Aún puedes responder correctamente.";
+
+    document.getElementById("alienMessage").textContent =
+      "¡No te rindas, Guardián! Puedes intentarlo otra vez.";
+
+    const remainingOptions = Array.from(buttons).some(button => !button.disabled);
+
+    if (!remainingOptions) {
+      buttons.forEach(button => {
+        button.disabled = false;
+        button.classList.remove("selected-wrong");
+      });
+    }
+  }
+}
+
+function continueGame() {
+  if (!questionLocked || !lastAnswerWasCorrect) return;
+
+  if (currentQuestion < 2) {
+    currentQuestion++;
+    renderQuestion();
+    document.getElementById("questionText").scrollIntoView({
+      behavior:"smooth", block:"center"
+    });
+    return;
+  }
+
+  completedLevels.push(currentLevel);
+  renderSidebar();
+  updateStats();
+
+  const feedback = document.getElementById("feedback");
+  feedback.className = "feedback neutral";
+  feedback.replaceChildren();
+
+  const title = document.createElement("strong");
+  title.textContent = "🔓 ¡NIVEL COMPLETADO!";
+
+  const message = document.createElement("div");
+  message.textContent =
+    "Has respondido correctamente las tres preguntas y recuperado una letra del código secreto.";
+
+  const letter = document.createElement("div");
+  letter.style.cssText =
+    "font-size:3rem;font-weight:1000;color:var(--green);text-align:center;margin:12px";
+  letter.textContent = levels[currentLevel].letter;
+
+  feedback.append(title, message, letter);
+
+  const button = document.getElementById("continueButton");
+  button.classList.remove("hidden");
+
+  if (currentLevel < levels.length - 1) {
+    button.textContent = "DESBLOQUEAR SIGUIENTE NIVEL ➜";
+    button.onclick = unlockNextLevel;
+  } else {
+    button.textContent = "ACTIVAR CENTRO AMBIENTAL 🏆";
+    button.onclick = showVictory;
+  }
+
+  document.getElementById("attemptLabel").textContent =
+    "¡Letra recuperada! Ya puedes continuar.";
+
+  document.getElementById("alienMessage").textContent =
+    "¡Nivel superado! Has recuperado la letra " + levels[currentLevel].letter + ".";
+}
+
+function unlockNextLevel() {
+  if (!completedLevels.includes(currentLevel)) return;
+
+  currentLevel++;
+  currentQuestion = 0;
+
+  document.getElementById("continueButton").onclick = continueGame;
+
+  renderSidebar();
+  renderQuestion();
+
+  document.getElementById("game").scrollIntoView({
+    behavior:"smooth", block:"start"
+  });
+}
+
+function updateStats() {
+  const completedQuestions = answeredQuestions.reduce(
+    (sum, row) => sum + row.filter(Boolean).length, 0
+  );
+
+  const progress = Math.round((completedQuestions / 15) * 100);
+
+  document.getElementById("statLevels").textContent =
+    completedLevels.length + "/5";
+
+  document.getElementById("statQuestions").textContent =
+    completedQuestions + "/15";
+
+  document.getElementById("statLetters").textContent =
+    completedLevels.length + "/5";
+
+  document.getElementById("progressText").textContent = progress + "%";
+  document.getElementById("progressFill").style.width = progress + "%";
+}
+
+function showVictory() {
+  if (completedLevels.length !== levels.length) return;
+
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("victory").classList.remove("hidden");
+
+  document.getElementById("finalWord").textContent =
+    levels.map(level => level.letter).join("");
+
+  document.getElementById("finalStats").textContent =
+    "🏆 5 niveles completados · 15 preguntas correctas · " +
+    totalAttempts + " respuestas registradas";
+
+  document.getElementById("victory").scrollIntoView({
+    behavior:"smooth", block:"start"
+  });
+}
+
+function restartGame() {
+  document.getElementById("victory").classList.add("hidden");
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("welcome").classList.remove("hidden");
+  document.getElementById("welcome").scrollIntoView({
+    behavior:"smooth", block:"start"
+  });
+}
+</script>
+</body>
+</html>
